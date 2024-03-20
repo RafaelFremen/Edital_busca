@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from PyPDF2 import PdfReader
-from io import BytesIO
 
 # Função para ler o arquivo PDF e procurar o nome
 def procurar_nome_pdf(nome, arquivo_pdf, progresso):
