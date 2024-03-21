@@ -10,7 +10,7 @@ def procurar_nome_pdf(nome, arquivo_pdf, progresso):
     for i, page in enumerate(reader.pages):
         text = page.extract_text()
         for j, line in enumerate(text.split('\n'), start=1):
-            if nome in line:
+            if nome.lower() in line.lower():
                 return (i+1, line)  # Retorna o número da página (i+1) e a linha onde foi encontrado o nome
         progresso.progress((i + 1) / num_pages)
         if st.session_state.stop_searching:
@@ -19,7 +19,7 @@ def procurar_nome_pdf(nome, arquivo_pdf, progresso):
             return None
     
     return None
-
+  
 # Função para processar o arquivo Excel
 def processar_arquivo_excel(arquivo_excel):
     df = pd.read_excel(arquivo_excel)  # Lê todas as colunas
@@ -38,6 +38,9 @@ def main():
     
     # DataFrame para armazenar resultados
     resultados = pd.DataFrame(columns=["Nome", "Arquivo", "Página", "Informações"])
+    
+    # Botão para parar a busca
+    btn_parar_busca = st.sidebar.button("Parar Busca")
     
     # Botão para iniciar a busca
     if st.sidebar.button("Procurar"):
@@ -63,9 +66,10 @@ def main():
             st.success("Procura concluída!")
             st.write(resultados)
     
-    # Botão para parar a busca
-    if st.sidebar.button("Parar Busca"):
+    # Verifica se o botão "Parar Busca" foi pressionado
+    if btn_parar_busca:
         st.session_state.stop_searching = True
+
 
 if __name__ == "__main__":
     main()
